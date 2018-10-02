@@ -13,7 +13,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/repository_card_height"
         android:padding="@dimen/element_default_margin">
 
         <ImageView
@@ -23,7 +23,19 @@
             android:src="@drawable/circle_avatar_placeholder"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:contentDescription="@string/repository_avatar_description" />
+
+        <TextView
+            android:id="@+id/txtRepositoryName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textAlignment="center"
+            android:textColor="@color/colorRepositoryCardTitle"
+            android:textSize="@dimen/repository_card_title_text"
+            app:layout_constraintEnd_toStartOf="@+id/txtRepositoryForkCount"
+            app:layout_constraintStart_toEndOf="@id/imgRepositoryOwnerAvatar" />
 
         <TextView
             android:id="@+id/txtRepositoryForkCount"
@@ -43,20 +55,7 @@
             android:textColor="@color/colorRepositoryCardForkLabel"
             android:textSize="@dimen/repository_card_forks_label_text"
             app:layout_constraintTop_toBottomOf="@id/txtRepositoryForkCount"
-            app:layout_constraintStart_toStartOf="@id/txtRepositoryForkCount" />
-
-        <TextView
-            android:id="@+id/txtRepositoryName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:textSize="@dimen/repository_card_title_text"
-            android:textColor="@color/colorRepositoryCardTitle"
-            app:layout_constraintStart_toEndOf="@id/imgRepositoryOwnerAvatar"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="@dimen/element_default_half_margin"
-            android:layout_marginEnd="@dimen/element_default_half_margin"
-            app:layout_constraintHorizontal_bias="0.35" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/txtRepositoryDescription"

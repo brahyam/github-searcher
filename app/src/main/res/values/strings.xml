@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Github Searcher</string>
     <string name="dummy_repository_description">Android app that queries Github graphql API and fetches a list of repositories</string>
-    <string name="dummy_fork_count">57</string>
+    <string name="dummy_fork_count">75</string>
     <string name="forks">Forks</string>
+    <string name="repository_avatar_description">Contains the avatar image of the repository owner</string>
+    <string name="search">Search</string>
 </resources>

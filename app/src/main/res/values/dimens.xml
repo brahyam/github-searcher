@@ -11,4 +11,7 @@
     <dimen name="repository_card_forks_text">25sp</dimen>
     <dimen name="repository_card_forks_label_text">10sp</dimen>
     <dimen name="app_name_text">35sp</dimen>
+    <dimen name="search_button_min_width">45dp</dimen>
+    <dimen name="search_button_min_height">35dp</dimen>
+    <dimen name="repository_card_height">110dp</dimen>
 </resources>

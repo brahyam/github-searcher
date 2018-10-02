@@ -3,11 +3,11 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorAppBackground">@color/colorPrimary</color>
-    <color name="colorRepositoryCardBackground">#E3E3E3</color>
+    <color name="colorAppBackground">#E3E3E3</color>
+    <color name="colorRepositoryCardBackground">#FFF</color>
     <color name="colorRepositoryCardTitle">#000</color>
     <color name="colorRepositoryCardDescription">#808080</color>
     <color name="colorRepositoryCardForkCount">#000</color>
     <color name="colorRepositoryCardForkLabel">#808080</color>
-    <color name="colorAppName">#E3E3E3</color>
+    <color name="colorAppName">#F74F57</color>
 </resources>

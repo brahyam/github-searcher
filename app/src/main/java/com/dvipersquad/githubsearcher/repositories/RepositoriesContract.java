@@ -8,15 +8,13 @@ import com.dvipersquad.githubsearcher.data.Repository;
 
 import java.util.List;
 
-public class RepositoriesContract {
+public interface RepositoriesContract {
 
     interface View extends BaseView<Presenter> {
 
-        void showRepositories(List<Repository> repositories, int page);
+        void showRepositories(List<Repository> repositories, boolean isLastPage, boolean clearAdapter);
 
-        void showLoadingIndicator();
-
-        void showEmptyRepositoryList();
+        void showLoadingIndicator(boolean active);
 
         void showErrorMessage(String message);
 
@@ -27,7 +25,7 @@ public class RepositoriesContract {
 
     interface Presenter extends BasePresenter<View> {
 
-        void loadRepositories(boolean forceUpdate, int page);
+        void loadRepositories(boolean forceUpdate, String query);
 
         void openRepositoryDetailsView(@NonNull Repository repository);
 

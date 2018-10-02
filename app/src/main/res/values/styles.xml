@@ -10,7 +10,7 @@
 
     <style name="NoShadowActionBarTheme" parent="Widget.AppCompat.ActionBar.Solid">
         <!-- remove shadow below action bar -->
-        <!-- <item name="android:elevation">0dp</item> -->
+        <!-- <item userName="android:elevation">0dp</item> -->
         <!-- Support library compatibility -->
         <item name="elevation">0dp</item>
     </style>
