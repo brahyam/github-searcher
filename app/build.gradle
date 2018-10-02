@@ -40,6 +40,7 @@ dependencies {
     implementation "com.android.support.test.espresso:espresso-idling-resource:$rootProject.espressoVersion"
     implementation "com.google.guava:guava:$rootProject.guavaVersion"
     implementation "android.arch.persistence.room:runtime:$rootProject.roomVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttpLoggingInterceptorVersion"
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitGsonVersion"
     implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
