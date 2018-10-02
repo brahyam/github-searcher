@@ -2,7 +2,7 @@ package com.dvipersquad.githubsearcher.di;
 
 import android.app.Application;
 
-import com.dvipersquad.githubsearcher.SearcherApp;
+import com.dvipersquad.githubsearcher.SearchApp;
 
 import javax.inject.Singleton;
 
@@ -16,7 +16,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
         AppModule.class,
         ActivityBindingModule.class,
         AndroidSupportInjectionModule.class})
-public interface AppComponent extends AndroidInjector<SearcherApp> {
+public interface AppComponent extends AndroidInjector<SearchApp> {
 
     // Enable us to doDaggerAppComponent.builder().application(this).build().inject(this);
     // Includes application in graph

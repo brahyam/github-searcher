@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="@color/colorRepositoryCardBackground"
+    android:foreground="?attr/selectableItemBackground"
+    android:layout_marginBottom="@dimen/repository_card_margin"
+    app:cardElevation="@dimen/repository_card_elevation"
+    app:cardCornerRadius="@dimen/repository_card_corner_radius">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/element_default_margin">
+
+        <ImageView
+            android:id="@+id/imgRepositoryOwnerAvatar"
+            android:layout_width="@dimen/repository_owner_avatar_width"
+            android:layout_height="@dimen/repository_owner_avatar_height"
+            android:src="@drawable/circle_avatar_placeholder"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/txtRepositoryForkCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dummy_fork_count"
+            android:textColor="@color/colorRepositoryCardForkCount"
+            android:textSize="@dimen/repository_card_forks_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/imgRepositoryOwnerAvatar" />
+
+        <TextView
+            android:id="@+id/txtRepositoryForksLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/forks"
+            android:textColor="@color/colorRepositoryCardForkLabel"
+            android:textSize="@dimen/repository_card_forks_label_text"
+            app:layout_constraintTop_toBottomOf="@id/txtRepositoryForkCount"
+            app:layout_constraintStart_toStartOf="@id/txtRepositoryForkCount" />
+
+        <TextView
+            android:id="@+id/txtRepositoryName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textSize="@dimen/repository_card_title_text"
+            android:textColor="@color/colorRepositoryCardTitle"
+            app:layout_constraintStart_toEndOf="@id/imgRepositoryOwnerAvatar"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/element_default_half_margin"
+            android:layout_marginEnd="@dimen/element_default_half_margin"
+            app:layout_constraintHorizontal_bias="0.35" />
+
+        <TextView
+            android:id="@+id/txtRepositoryDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/dummy_repository_description"
+            android:textColor="@color/colorRepositoryCardDescription"
+            android:maxLength="180"
+            android:ellipsize="end"
+            android:textAlignment="center"
+            android:layout_marginStart="@dimen/element_default_margin"
+            android:layout_marginEnd="@dimen/element_default_margin"
+            app:layout_constraintTop_toBottomOf="@id/txtRepositoryName"
+            app:layout_constraintStart_toEndOf="@id/imgRepositoryOwnerAvatar"
+            app:layout_constraintEnd_toStartOf="@id/txtRepositoryForkCount" />
+
+    </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>
