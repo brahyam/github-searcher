@@ -2,6 +2,7 @@ package com.dvipersquad.githubsearcher.data.source;
 
 import com.dvipersquad.githubsearcher.data.Repository;
 import com.dvipersquad.githubsearcher.data.User;
+import com.dvipersquad.githubsearcher.data.Watchers;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -32,21 +33,24 @@ public class RepositoriesRepositoryTest {
                 "Test Name 1",
                 "Test Description 1",
                 1,
-                new User("uId1", "uName1", "Url1")
+                new Watchers(1),
+                new User("uId1", "uName1", "Url1", "testId1")
         ));
         add(new Repository(
                 "testId2",
                 "Test Name 2",
                 "Test Description 2",
                 2,
-                new User("uId2", "uName2", "Url2")
+                new Watchers(1),
+                new User("uId2", "uName2", "Url2", "testId2")
         ));
         add(new Repository(
                 "testId3",
                 "Test Name 3",
                 "Test Description 3",
                 3,
-                new User("uId3", "uName3", "Url3")
+                new Watchers(1),
+                new User("uId3", "uName3", "Url3", "testId3")
         ));
     }};
 

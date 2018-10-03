@@ -2,6 +2,7 @@ package com.dvipersquad.githubsearcher.repositories;
 
 import com.dvipersquad.githubsearcher.data.Repository;
 import com.dvipersquad.githubsearcher.data.User;
+import com.dvipersquad.githubsearcher.data.Watchers;
 import com.dvipersquad.githubsearcher.data.source.RepositoriesDataSource;
 import com.dvipersquad.githubsearcher.data.source.RepositoriesRepository;
 
@@ -55,21 +56,24 @@ public class RepositoriesPresenterTests {
                     "Test Name 1",
                     "Test Description 1",
                     1,
-                    new User("uId1", "uName1", "Url1")
+                    new Watchers(1),
+                    new User("uId1", "uName1", "Url1", "testId1")
             ));
             add(new Repository(
                     "testId2",
                     "Test Name 2",
                     "Test Description 2",
                     2,
-                    new User("uId2", "uName2", "Url2")
+                    new Watchers(1),
+                    new User("uId2", "uName2", "Url2", "testId2")
             ));
             add(new Repository(
                     "testId3",
                     "Test Name 3",
                     "Test Description 3",
                     3,
-                    new User("uId3", "uName3", "Url3")
+                    new Watchers(1),
+                    new User("uId3", "uName3", "Url3", "testId3")
             ));
         }};
     }
@@ -95,7 +99,7 @@ public class RepositoriesPresenterTests {
 
 
     @Test
-    public void unavailableTasks_ShowsError() {
+    public void unavailableRepositories_ShowsError() {
         // When repositories are loaded
         repositoriesPresenter.loadRepositories(true, DEFAULT_QUERY);
 
@@ -105,6 +109,15 @@ public class RepositoriesPresenterTests {
 
         // Then an error message is shown
         verify(repositoriesView).showErrorMessage(eq(DEFAULT_MESSAGE));
+    }
+
+    @Test
+    public void clickOnRepository_ShowsDetailUi() {
+        // When open hotel details is requested
+        repositoriesPresenter.openRepositoryDetailsView(REPOSITORIES.get(0));
+
+        // Then hotel detail UI is shown
+        verify(repositoriesView).showRepositoryDetailsUI(eq(REPOSITORIES.get(0).getId()));
     }
 
 }
