@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.github.florent37.diagonallayout.DiagonalLayout
+        android:id="@+id/diagonalRepositoryName"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/repository_details_diagonal_height"
+        android:elevation="@dimen/repository_details_diagonal_elevation"
+        android:orientation="vertical"
+        app:diagonal_angle="15"
+        app:diagonal_direction="left"
+        app:diagonal_position="bottom">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/txtRepositoryDetailsName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/element_default_margin"
+            android:text="@string/app_name"
+            android:maxLines="1"
+            android:textColor="@color/colorRepositoryDetailsTitle"
+            android:textSize="@dimen/repository_details_title_text"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtRepositoryDetailsNameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/repository_details_subtitle_top_margin"
+            android:padding="@dimen/element_default_margin"
+            android:text="@string/repository"
+            android:textColor="@color/colorRepositoryDetailsSubtitle"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+    </com.github.florent37.diagonallayout.DiagonalLayout>
+
+    <TextView
+        android:id="@+id/txtRepositorySubscribersCountLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/subscribers"
+        android:textSize="@dimen/repository_details_subscribers_label_text"
+        android:textColor="@color/colorRepositoryDetailsSubscribersLabel"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintBottom_toBottomOf="@id/diagonalRepositoryName" />
+
+    <TextView
+        android:id="@+id/txtRepositorySubscribersCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dummy_fork_count"
+        android:textColor="@color/colorRepositoryDetailsSubscribersCount"
+        android:textStyle="bold"
+        android:textSize="@dimen/repository_details_subscribers_text"
+        android:layout_marginStart="@dimen/element_default_margin"
+        app:layout_constraintBottom_toTopOf="@id/txtRepositorySubscribersCountLabel"
+        app:layout_constraintStart_toStartOf="@id/txtRepositorySubscribersCountLabel"
+        app:layout_constraintEnd_toEndOf="@id/txtRepositorySubscribersCountLabel" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerRepositorySubscribers"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/diagonalRepositoryName"
+        android:layout_marginTop="@dimen/element_default_margin"
+        tools:itemCount="3"
+        tools:listitem="@layout/repositorydetails_item" />
+
+    <ProgressBar
+        android:id="@+id/progressBarUsersLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/recyclerRepositorySubscribers"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:indeterminateTint="@color/colorAccent"
+        android:visibility="gone" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7" />
+
+</android.support.constraint.ConstraintLayout>
