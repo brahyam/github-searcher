@@ -29,7 +29,7 @@
         android:id="@+id/editTextSearchRepositories"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/element_default_half_margin"
+        android:paddingStart="@dimen/element_default_margin"
         android:paddingEnd="@dimen/element_default_margin"
         android:paddingTop="@dimen/element_default_half_margin"
         android:paddingBottom="@dimen/element_default_half_margin"

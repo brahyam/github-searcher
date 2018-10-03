@@ -1,5 +1,7 @@
 package com.dvipersquad.githubsearcher.repositories;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +15,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -21,6 +24,8 @@ import android.widget.TextView;
 import com.dvipersquad.githubsearcher.R;
 import com.dvipersquad.githubsearcher.data.Repository;
 import com.dvipersquad.githubsearcher.di.ActivityScoped;
+import com.dvipersquad.githubsearcher.repositorydetails.RepositoryDetailsActivity;
+import com.dvipersquad.githubsearcher.utils.EndlessRecyclerViewScrollListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +85,13 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.repositories_frag, container, false);
+        progressBarRepositoriesLoading = rootView.findViewById(R.id.progressBarRepositoriesLoading);
+        final RecyclerView recyclerRepositories = rootView.findViewById(R.id.recyclerRepositories);
+        recyclerRepositories.setHasFixedSize(true);
+        recyclerRepositories.setLayoutManager(linearLayoutManager);
+        recyclerRepositories.addOnScrollListener(paginationListener);
+        recyclerRepositories.setAdapter(adapter);
+
         final EditText editTextSearchRepositories = rootView.findViewById(R.id.editTextSearchRepositories);
         editTextSearchRepositories.addTextChangedListener(new TextWatcher() {
             @Override
@@ -102,26 +114,28 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if (!TextUtils.isEmpty(textView.getText().toString())) {
                     presenter.loadRepositories(true, query);
+                    linearLayoutManager.smoothScrollToPosition(recyclerRepositories, null, 0);
                 }
+
                 return false;
             }
         });
+
         Button btnSearchRepositories = rootView.findViewById(R.id.btnSearchRepositories);
         btnSearchRepositories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!TextUtils.isEmpty(editTextSearchRepositories.getText().toString())) {
                     presenter.loadRepositories(true, query);
+                    linearLayoutManager.smoothScrollToPosition(recyclerRepositories, null, 0);
+                }
+                if (getActivity() != null && getActivity().getSystemService(Context.INPUT_METHOD_SERVICE) != null && getView() != null && getView().getWindowToken() != null) {
+                    final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
                 }
             }
         });
 
-        progressBarRepositoriesLoading = rootView.findViewById(R.id.progressBarRepositoriesLoading);
-        RecyclerView recyclerRepositories = rootView.findViewById(R.id.recyclerRepositories);
-        recyclerRepositories.setHasFixedSize(true);
-        recyclerRepositories.setLayoutManager(linearLayoutManager);
-        recyclerRepositories.addOnScrollListener(paginationListener);
-        recyclerRepositories.setAdapter(adapter);
         return rootView;
     }
 
@@ -167,7 +181,9 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
 
     @Override
     public void showRepositoryDetailsUI(@NonNull String repositoryId) {
-
+        Intent intent = new Intent(getContext(), RepositoryDetailsActivity.class);
+        intent.putExtra(RepositoryDetailsActivity.EXTRA_REPOSITORY_ID, repositoryId);
+        startActivity(intent);
     }
 
     @Override

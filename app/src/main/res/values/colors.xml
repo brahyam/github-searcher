@@ -10,4 +10,10 @@
     <color name="colorRepositoryCardForkCount">#000</color>
     <color name="colorRepositoryCardForkLabel">#808080</color>
     <color name="colorAppName">#F74F57</color>
+    <color name="colorUserCardBackground">#FFF</color>
+    <color name="colorUserCardTitle">#808080</color>
+    <color name="colorRepositoryDetailsTitle">#FFF</color>
+    <color name="colorRepositoryDetailsSubtitle">#FFF</color>
+    <color name="colorRepositoryDetailsSubscribersLabel">#808080</color>
+    <color name="colorRepositoryDetailsSubscribersCount">#808080</color>
 </resources>

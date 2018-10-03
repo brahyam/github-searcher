@@ -25,9 +25,9 @@ import retrofit2.http.POST;
 public class RepositoriesRemoteDataSource implements RepositoriesDataSource {
 
     private final static String API_URL = "https://api.github.com/";
-    private final static String SECURITY_TOKEN = "855cc35b9ceac157aaffbf53ded077d145ed75a0";
+    private final static String SECURITY_TOKEN = "742a74a3a9c58e95e651956b7a31b21bbc62b1f3";
     private final static Integer REPOSITORIES_TO_FETCH = 15;
-    private final static Integer WATCHERS_TO_FETCH = 10;
+    private final static Integer WATCHERS_TO_FETCH = 20;
     private final static String TAG = RepositoriesRemoteDataSource.class.getSimpleName();
     private static final String NOT_FOUND = "Not found";
     private RepositoriesApi repositoriesApi;

@@ -52,4 +52,5 @@ ext {
     picassoVersion = '2.71828'
     okhttpLoggingInterceptorVersion = '3.10.0'
     debugDBVersion = '1.0.4'
+    diagonalLayoutVersion='1.0.9'
 }

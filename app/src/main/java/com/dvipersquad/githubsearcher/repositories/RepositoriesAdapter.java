@@ -104,8 +104,8 @@ public class RepositoriesAdapter extends RecyclerView.Adapter<RepositoriesAdapte
         ViewHolder(View itemView) {
             super(itemView);
             layout = itemView;
-            imgRepositoryOwnerAvatar = itemView.findViewById(R.id.imgRepositoryOwnerAvatar);
-            txtRepositoryName = itemView.findViewById(R.id.txtRepositoryName);
+            imgRepositoryOwnerAvatar = itemView.findViewById(R.id.imgUserAvatar);
+            txtRepositoryName = itemView.findViewById(R.id.txtUserName);
             txtRepositoryDescription = itemView.findViewById(R.id.txtRepositoryDescription);
             txtRepositoryForkCount = itemView.findViewById(R.id.txtRepositoryForkCount);
         }
