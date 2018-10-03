@@ -81,7 +81,9 @@ public class RepositoriesPresenter implements RepositoriesContract.Presenter {
     @Override
     public void takeView(RepositoriesContract.View view) {
         this.repositoriesView = view;
-        loadRepositories(false, DEFAULT_QUERY);
+        if (lastQueryLoaded == null || lastQueryLoaded.isEmpty() || lastQueryLoaded.equals(DEFAULT_QUERY)) {
+            loadRepositories(false, DEFAULT_QUERY);
+        }
     }
 
     @Override
