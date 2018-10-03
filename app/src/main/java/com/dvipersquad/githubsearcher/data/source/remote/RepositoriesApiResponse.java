@@ -1,6 +1,8 @@
 package com.dvipersquad.githubsearcher.data.source.remote;
 
-import com.dvipersquad.githubsearcher.data.Repository;
+import android.arch.persistence.room.Ignore;
+
+import com.dvipersquad.githubsearcher.data.User;
 
 import java.util.List;
 
@@ -76,17 +78,137 @@ public class RepositoriesApiResponse {
     }
 
     public class RepositoryNode {
-        Repository node;
+        ResponseRepository node;
 
-        public RepositoryNode(Repository node) {
+        public RepositoryNode(ResponseRepository node) {
             this.node = node;
         }
 
-        public Repository getNode() {
+        public ResponseRepository getNode() {
             return node;
         }
 
-        public void setNode(Repository node) {
+        public void setNode(ResponseRepository node) {
+            this.node = node;
+        }
+    }
+
+    public class ResponseRepository {
+        private String id;
+
+        private String name;
+
+        private String description;
+
+        private int forkCount;
+
+        private ResponseWatchers watchers;
+
+        private User owner;
+
+        public ResponseRepository(String id, String name, String description, int forkCount, ResponseWatchers watchers, User owner) {
+            this.id = id;
+            this.name = name;
+            this.description = description;
+            this.forkCount = forkCount;
+            this.watchers = watchers;
+            this.owner = owner;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public int getForkCount() {
+            return forkCount;
+        }
+
+        public void setForkCount(int forkCount) {
+            this.forkCount = forkCount;
+        }
+
+        public ResponseWatchers getWatchers() {
+            return watchers;
+        }
+
+        public void setWatchers(ResponseWatchers watchers) {
+            this.watchers = watchers;
+        }
+
+        public User getOwner() {
+            return owner;
+        }
+
+        public void setOwner(User owner) {
+            this.owner = owner;
+        }
+    }
+
+    public class ResponseWatchers {
+        private int totalCount;
+
+        @Ignore
+        private List<UserNode> watchers;
+
+        public ResponseWatchers(int totalCount) {
+            this.totalCount = totalCount;
+        }
+
+        public ResponseWatchers(int totalCount, List<UserNode> watchers) {
+            this.totalCount = totalCount;
+            this.watchers = watchers;
+        }
+
+        public int getTotalCount() {
+            return totalCount;
+        }
+
+        public void setTotalCount(int totalCount) {
+            this.totalCount = totalCount;
+        }
+
+        public List<UserNode> getWatchers() {
+            return watchers;
+        }
+
+        public void setWatchers(List<UserNode> watchers) {
+            this.watchers = watchers;
+        }
+    }
+
+    public class UserNode {
+
+        User node;
+
+        public UserNode(User node) {
+            this.node = node;
+        }
+
+        public User getNode() {
+            return node;
+        }
+
+        public void setNode(User node) {
             this.node = node;
         }
     }

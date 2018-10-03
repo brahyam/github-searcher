@@ -3,6 +3,7 @@ package com.dvipersquad.githubsearcher.data.source.local;
 import android.support.annotation.NonNull;
 
 import com.dvipersquad.githubsearcher.data.Repository;
+import com.dvipersquad.githubsearcher.data.User;
 import com.dvipersquad.githubsearcher.data.source.RepositoriesDataSource;
 import com.dvipersquad.githubsearcher.utils.AppExecutors;
 
@@ -53,10 +54,14 @@ public class RepositoriesLocalDataSource implements RepositoriesDataSource {
             @Override
             public void run() {
                 final Repository repository = repositoriesDao.getRepositoryById(repositoryId);
+                final List<User> repositoryWatchers = repositoriesDao.getRepositoryUsers(repositoryId);
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
                         if (repository == null) {
+                            if (repository.getWatchers() != null) {
+                                repository.getWatchers().setWatchers(repositoryWatchers);
+                            }
                             callback.onDataNotAvailable(NOT_FOUND_MESSAGE);
                         } else {
                             callback.onRepositoryLoaded(repository);
@@ -74,6 +79,7 @@ public class RepositoriesLocalDataSource implements RepositoriesDataSource {
             @Override
             public void run() {
                 repositoriesDao.insertRepository(repository);
+                repositoriesDao.insertUsers(repository.getWatchers().getWatchers());
             }
         };
         appExecutors.diskIO().execute(runnable);

@@ -5,6 +5,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import com.dvipersquad.githubsearcher.data.source.remote.RepositoriesApiResponse;
+
 @Entity(tableName = "repositories")
 public class Repository {
 
@@ -19,14 +21,27 @@ public class Repository {
     private int forkCount;
 
     @Embedded
+    private Watchers watchers;
+
+    @Embedded
     private User owner;
 
-    public Repository(String id, String name, String description, int forkCount, User owner) {
+    public Repository(@NonNull String id, String name, String description, int forkCount, Watchers watchers, User owner) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.forkCount = forkCount;
+        this.watchers = watchers;
         this.owner = owner;
+    }
+
+    public Repository(RepositoriesApiResponse.ResponseRepository responseRepository) {
+        this.id = responseRepository.getId();
+        this.name = responseRepository.getName();
+        this.description = responseRepository.getDescription();
+        this.forkCount = responseRepository.getForkCount();
+        this.watchers = new Watchers(responseRepository.getWatchers(), this.id);
+        this.owner = responseRepository.getOwner();
     }
 
     @NonNull
@@ -34,7 +49,7 @@ public class Repository {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 
@@ -60,6 +75,14 @@ public class Repository {
 
     public void setForkCount(int forkCount) {
         this.forkCount = forkCount;
+    }
+
+    public Watchers getWatchers() {
+        return watchers;
+    }
+
+    public void setWatchers(Watchers watchers) {
+        this.watchers = watchers;
     }
 
     public User getOwner() {

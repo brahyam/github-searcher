@@ -23,7 +23,6 @@ public class RepositoriesRepository implements RepositoriesDataSource {
     Map<String, Repository> cachedRepositories;
 
     private boolean cacheIsDirty = false;
-    private String lastElementLoaded;
 
     @Inject
     RepositoriesRepository(@Remote RepositoriesDataSource repositoriesRemoteDataSource, @Local RepositoriesDataSource repositoriesLocalDataSource) {
@@ -43,7 +42,7 @@ public class RepositoriesRepository implements RepositoriesDataSource {
             repositoriesLocalDataSource.getRepositories(query, lastElement, new LoadRepositoriesCallback() {
 
                 @Override
-                public void onRepositoriesLoaded(List<Repository> repositories, String lastElement, boolean hasNextPage) {
+                public void onRepositoriesLoaded(List<Repository> repositories, @NonNull String lastElement, boolean hasNextPage) {
                     refreshCache(repositories);
                     callback.onRepositoriesLoaded(repositories, lastElement, hasNextPage);
                 }
@@ -63,7 +62,6 @@ public class RepositoriesRepository implements RepositoriesDataSource {
             public void onRepositoriesLoaded(List<Repository> repositories, @NonNull String lastElement, boolean hasNextPage) {
                 refreshCache(repositories);
                 refreshLocalDataSource(repositories);
-                lastElementLoaded = lastElement;
                 callback.onRepositoriesLoaded(repositories, lastElement, hasNextPage);
             }
 

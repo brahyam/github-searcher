@@ -26,7 +26,8 @@ public class RepositoriesRemoteDataSource implements RepositoriesDataSource {
 
     private final static String API_URL = "https://api.github.com/";
     private final static String SECURITY_TOKEN = "855cc35b9ceac157aaffbf53ded077d145ed75a0";
-    private final static Integer REPOSITORIES_TO_FETCH = 10;
+    private final static Integer REPOSITORIES_TO_FETCH = 15;
+    private final static Integer WATCHERS_TO_FETCH = 10;
     private final static String TAG = RepositoriesRemoteDataSource.class.getSimpleName();
     private static final String NOT_FOUND = "Not found";
     private RepositoriesApi repositoriesApi;
@@ -55,7 +56,8 @@ public class RepositoriesRemoteDataSource implements RepositoriesDataSource {
                         new GetRepositoriesApiRequest.Variables(
                                 query,
                                 REPOSITORIES_TO_FETCH,
-                                lastElement));
+                                lastElement,
+                                WATCHERS_TO_FETCH));
 
         Call<RepositoriesApiResponse> call = repositoriesApi.getRepositories(request);
         call.enqueue(new Callback<RepositoriesApiResponse>() {
@@ -65,7 +67,7 @@ public class RepositoriesRemoteDataSource implements RepositoriesDataSource {
                 if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
                     List<Repository> repositories = new ArrayList<>();
                     for (RepositoriesApiResponse.RepositoryNode node : response.body().getData().getSearch().getRepositories()) {
-                        repositories.add(node.getNode());
+                        repositories.add(new Repository(node.getNode()));
                     }
                     callback.onRepositoriesLoaded(
                             repositories,

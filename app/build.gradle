@@ -47,6 +47,9 @@ dependencies {
     implementation "com.squareup.picasso:picasso:$rootProject.picassoVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$rootProject.roomVersion"
 
+    // Database Debugging
+    debugImplementation "com.amitshekhar.android:debug-db:$rootProject.debugDBVersion"
+
     // Dagger dependencies
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
     implementation "com.google.dagger:dagger:$rootProject.daggerVersion"

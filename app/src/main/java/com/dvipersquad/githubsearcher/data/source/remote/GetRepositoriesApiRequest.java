@@ -3,8 +3,9 @@ package com.dvipersquad.githubsearcher.data.source.remote;
 public class GetRepositoriesApiRequest {
 
     private static final String GET_REPOSITORIES_QUERY = "" +
-            "query SearchRepositories($queryString: String!, $number: Int!, $after: String) {" +
-            "search(query: $queryString, first: $number, after: $after, type: REPOSITORY) {" +
+            "query SearchRepositories(" +
+            "$queryString: String!, $repositoryNumber: Int!, $after: String, $watcherNumber: Int!) {" +
+            "search(query: $queryString, first: $repositoryNumber, after: $after, type: REPOSITORY) {" +
             "repositoryCount pageInfo { " +
             "endCursor " +
             "hasNextPage } " +
@@ -15,17 +16,17 @@ public class GetRepositoriesApiRequest {
             "name " +
             "description " +
             "forkCount " +
-//            "watchers(first: 3) {" +
-//            " totalCount " +
-//            "watchers: edges {" +
-//            " node { " +
-//            "... on User { " +
-//            "id " +
-//            "name " +
-//            "avatarUrl } " +
-//            "} " +
-//            "} " +
-//            "}  " +
+            "watchers(first: $watcherNumber) {" +
+            " totalCount " +
+            "watchers: edges {" +
+            " node { " +
+            "... on User { " +
+            "id " +
+            "name " +
+            "avatarUrl } " +
+            "} " +
+            "} " +
+            "}  " +
             "owner { " +
             "... on User { " +
             "id " +
@@ -67,14 +68,17 @@ public class GetRepositoriesApiRequest {
 
         private String queryString;
 
-        private Integer number;
+        private Integer repositoryNumber;
 
         private String after;
 
-        public Variables(String queryString, Integer number, String after) {
+        private Integer watcherNumber;
+
+        public Variables(String queryString, Integer repositoryNumber, String after, Integer watcherNumber) {
             this.queryString = queryString;
-            this.number = number;
+            this.repositoryNumber = repositoryNumber;
             this.after = after;
+            this.watcherNumber = watcherNumber;
         }
 
         public String getQueryString() {
@@ -85,12 +89,12 @@ public class GetRepositoriesApiRequest {
             this.queryString = queryString;
         }
 
-        public Integer getNumber() {
-            return number;
+        public Integer getRepositoryNumber() {
+            return repositoryNumber;
         }
 
-        public void setNumber(Integer number) {
-            this.number = number;
+        public void setRepositoryNumber(Integer repositoryNumber) {
+            this.repositoryNumber = repositoryNumber;
         }
 
         public String getAfter() {
@@ -99,6 +103,14 @@ public class GetRepositoriesApiRequest {
 
         public void setAfter(String after) {
             this.after = after;
+        }
+
+        public Integer getWatcherNumber() {
+            return watcherNumber;
+        }
+
+        public void setWatcherNumber(Integer watcherNumber) {
+            this.watcherNumber = watcherNumber;
         }
     }
 }

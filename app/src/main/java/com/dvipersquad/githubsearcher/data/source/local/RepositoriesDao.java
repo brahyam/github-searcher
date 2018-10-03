@@ -7,6 +7,7 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.dvipersquad.githubsearcher.data.Repository;
+import com.dvipersquad.githubsearcher.data.User;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface RepositoriesDao {
     /**
      * Select all repositories that matches query
      *
-     * @return all repositories
+     * @return all repositories where name is like query, null if not found
      */
     @Query("SELECT * FROM Repositories WHERE name LIKE :query")
     List<Repository> getRepositoriesByQuery(String query);
@@ -68,4 +69,21 @@ public interface RepositoriesDao {
      */
     @Query("DELETE FROM Repositories")
     void deleteRepositories();
+
+    /**
+     * Select all users that waatch a repository
+     *
+     * @param repositoryId the repository id
+     * @return all users that are watching a repository
+     */
+    @Query("SELECT * FROM Users WHERE repositoryId = :repositoryId")
+    List<User> getRepositoryUsers(String repositoryId);
+
+    /**
+     * Inserts a list of users into the db
+     *
+     * @param users
+     */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertUsers(List<User> users);
 }
