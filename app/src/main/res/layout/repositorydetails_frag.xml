@@ -84,6 +84,7 @@
         app:layout_constraintBottom_toTopOf="@id/recyclerRepositorySubscribers"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:indeterminateTint="@color/colorAccent"
         android:visibility="gone" />
 
     <android.support.constraint.Guideline

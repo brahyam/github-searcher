@@ -23,6 +23,7 @@
         app:layout_constraintTop_toTopOf="@id/txtAppName"
         app:layout_constraintBottom_toBottomOf="@id/txtAppName"
         app:layout_constraintEnd_toEndOf="parent"
+        android:indeterminateTint="@color/colorAccent"
         android:visibility="gone" />
 
     <EditText
