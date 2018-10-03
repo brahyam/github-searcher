@@ -1,8 +1,6 @@
 package com.dvipersquad.githubsearcher.data.source;
 
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
-import android.util.Log;
 
 import com.dvipersquad.githubsearcher.data.Repository;
 
@@ -22,25 +20,24 @@ public class RepositoriesRepository implements RepositoriesDataSource {
     private final RepositoriesDataSource repositoriesRemoteDataSource;
     private final RepositoriesDataSource repositoriesLocalDataSource;
 
-    private Map<String, Repository> cachedRepositories;
+    Map<String, Repository> cachedRepositories;
 
-    boolean cacheIsDirty = false;
-    String lastElementLoaded;
+    private boolean cacheIsDirty = false;
+    private String lastElementLoaded;
 
     @Inject
-    public RepositoriesRepository(@Remote RepositoriesDataSource repositoriesRemoteDataSource, @Local RepositoriesDataSource repositoriesLocalDataSource) {
+    RepositoriesRepository(@Remote RepositoriesDataSource repositoriesRemoteDataSource, @Local RepositoriesDataSource repositoriesLocalDataSource) {
         this.repositoriesRemoteDataSource = repositoriesRemoteDataSource;
         this.repositoriesLocalDataSource = repositoriesLocalDataSource;
     }
 
     @Override
     public void getRepositories(@NonNull final String query, final String lastElement, @NonNull final LoadRepositoriesCallback callback) {
-        Log.d(TAG, "getRepositories(query:" + query + ")");
-        if (cachedRepositories != null && !cacheIsDirty && TextUtils.isEmpty(lastElement)) {
+        if (cachedRepositories != null && !cacheIsDirty && lastElement != null && !lastElement.isEmpty()) {
             callback.onRepositoriesLoaded(new ArrayList<>(cachedRepositories.values()), EMPTY_CURSOR, true);
         }
 
-        if (cacheIsDirty || !TextUtils.isEmpty(lastElement)) {
+        if (cacheIsDirty || (lastElement != null && !lastElement.isEmpty())) {
             getRepositoriesFromRemoteDataSource(query, lastElement, callback);
         } else {
             repositoriesLocalDataSource.getRepositories(query, lastElement, new LoadRepositoriesCallback() {

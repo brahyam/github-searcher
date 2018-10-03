@@ -2,8 +2,6 @@ package com.dvipersquad.githubsearcher.repositories;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
-import android.util.Log;
 
 import com.dvipersquad.githubsearcher.data.Repository;
 import com.dvipersquad.githubsearcher.data.source.RepositoriesDataSource;
@@ -35,12 +33,11 @@ public class RepositoriesPresenter implements RepositoriesContract.Presenter {
 
     @Override
     public void loadRepositories(boolean forceUpdate, final String query) {
-        Log.d(TAG, "Loading repositories for query:" + query);
         if (repositoriesView != null) {
             repositoriesView.showLoadingIndicator(true);
         }
 
-        if (!TextUtils.isEmpty(query) && !lastQueryLoaded.equals(query)) {
+        if (query != null && !query.isEmpty() && !lastQueryLoaded.equals(query)) {
             lastQueryLoaded = query;
             lastElementLoaded = null;
             firstLoad = true;
