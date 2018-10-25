@@ -54,8 +54,9 @@
             android:text="@string/forks"
             android:textColor="@color/colorRepositoryCardForkLabel"
             android:textSize="@dimen/repository_card_forks_label_text"
-            app:layout_constraintTop_toBottomOf="@id/txtRepositoryForkCount"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintStart_toStartOf="@id/txtRepositoryForkCount"
+            app:layout_constraintEnd_toEndOf="@id/txtRepositoryForkCount"
+            app:layout_constraintTop_toBottomOf="@id/txtRepositoryForkCount" />
 
         <TextView
             android:id="@+id/txtRepositoryDescription"

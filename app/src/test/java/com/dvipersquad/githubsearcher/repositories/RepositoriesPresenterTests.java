@@ -90,9 +90,9 @@ public class RepositoriesPresenterTests {
         loadRepositoriesCallbackCaptor.getValue().onRepositoriesLoaded(REPOSITORIES, DEFAULT_LAST_ELEMENT, true);
 
         // Progress indicator is shown
-        verify(repositoriesView, times(2)).showLoadingIndicator(true);
+        verify(repositoriesView, times(2)).toggleLoadingIndicator(true);
         // Progress indicator is hidden and repositories are shown
-        verify(repositoriesView, times(1)).showLoadingIndicator(false);
+        verify(repositoriesView, times(1)).toggleLoadingIndicator(false);
         ArgumentCaptor<List> showRepositoriesArgumentCaptor = ArgumentCaptor.forClass(List.class);
         verify(repositoriesView).showRepositories(eq(REPOSITORIES), any(Boolean.class), any(Boolean.class));
     }

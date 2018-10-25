@@ -14,11 +14,13 @@ public interface RepositoriesContract {
 
         void showRepositories(List<Repository> repositories, boolean isLastPage, boolean clearAdapter);
 
-        void showLoadingIndicator(boolean active);
+        void toggleLoadingIndicator(boolean active);
 
         void showErrorMessage(String message);
 
         void showRepositoryDetailsUI(@NonNull String repositoryId);
+
+        void hideStartInstructionsText();
 
         boolean isActive();
     }

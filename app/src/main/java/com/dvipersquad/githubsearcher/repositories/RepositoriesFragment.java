@@ -43,6 +43,10 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
 
     private ProgressBar progressBarRepositoriesLoading;
 
+    private TextView txtStartInstructions;
+
+    private RecyclerView recyclerRepositories;
+
     private String query;
 
     private boolean isLoading;
@@ -86,7 +90,8 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.repositories_frag, container, false);
         progressBarRepositoriesLoading = rootView.findViewById(R.id.progressBarRepositoriesLoading);
-        final RecyclerView recyclerRepositories = rootView.findViewById(R.id.recyclerRepositories);
+        txtStartInstructions = rootView.findViewById(R.id.txtStartInstructions);
+        recyclerRepositories = rootView.findViewById(R.id.recyclerRepositories);
         recyclerRepositories.setHasFixedSize(true);
         recyclerRepositories.setLayoutManager(linearLayoutManager);
         recyclerRepositories.addOnScrollListener(paginationListener);
@@ -109,6 +114,7 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
 
             }
         });
+
         editTextSearchRepositories.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -159,12 +165,13 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
         } else {
             adapter.addData(repositories);
         }
+        recyclerRepositories.setVisibility(View.VISIBLE);
         isLoading = false;
         this.isLastPage = isLastPage;
     }
 
     @Override
-    public void showLoadingIndicator(boolean active) {
+    public void toggleLoadingIndicator(boolean active) {
         if (active) {
             progressBarRepositoriesLoading.setVisibility(View.VISIBLE);
         } else {
@@ -184,6 +191,11 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
         Intent intent = new Intent(getContext(), RepositoryDetailsActivity.class);
         intent.putExtra(RepositoryDetailsActivity.EXTRA_REPOSITORY_ID, repositoryId);
         startActivity(intent);
+    }
+
+    @Override
+    public void hideStartInstructionsText() {
+        txtStartInstructions.setVisibility(View.GONE);
     }
 
     @Override

@@ -15,7 +15,6 @@ import javax.inject.Inject;
 @ActivityScoped
 public class RepositoriesPresenter implements RepositoriesContract.Presenter {
 
-    private static final String DEFAULT_QUERY = "a";
     private static final String TAG = RepositoriesPresenter.class.getSimpleName();
     private final RepositoriesRepository repositoriesRepository;
 
@@ -24,7 +23,7 @@ public class RepositoriesPresenter implements RepositoriesContract.Presenter {
 
     private boolean firstLoad = true;
     private String lastElementLoaded;
-    private String lastQueryLoaded = DEFAULT_QUERY;
+    private String lastQueryLoaded;
 
     @Inject
     RepositoriesPresenter(RepositoriesRepository repositoriesRepository) {
@@ -34,10 +33,10 @@ public class RepositoriesPresenter implements RepositoriesContract.Presenter {
     @Override
     public void loadRepositories(boolean forceUpdate, final String query) {
         if (repositoriesView != null) {
-            repositoriesView.showLoadingIndicator(true);
+            repositoriesView.toggleLoadingIndicator(true);
         }
 
-        if (query != null && !query.isEmpty() && !lastQueryLoaded.equals(query)) {
+        if (query != null && !query.isEmpty() && lastQueryLoaded == null || !lastQueryLoaded.equals(query)) {
             lastQueryLoaded = query;
             lastElementLoaded = null;
             firstLoad = true;
@@ -55,7 +54,8 @@ public class RepositoriesPresenter implements RepositoriesContract.Presenter {
                     return;
                 }
                 lastElementLoaded = lastElement;
-                repositoriesView.showLoadingIndicator(false);
+                repositoriesView.toggleLoadingIndicator(false);
+                repositoriesView.hideStartInstructionsText();
                 repositoriesView.showRepositories(repositories, hasNextPage, firstLoad);
                 firstLoad = false;
             }
@@ -65,7 +65,7 @@ public class RepositoriesPresenter implements RepositoriesContract.Presenter {
                 if (repositoriesView == null || !repositoriesView.isActive()) {
                     return;
                 }
-                repositoriesView.showLoadingIndicator(false);
+                repositoriesView.toggleLoadingIndicator(false);
                 repositoriesView.showErrorMessage(message);
             }
         });
@@ -81,9 +81,6 @@ public class RepositoriesPresenter implements RepositoriesContract.Presenter {
     @Override
     public void takeView(RepositoriesContract.View view) {
         this.repositoriesView = view;
-        if (lastQueryLoaded == null || lastQueryLoaded.isEmpty() || lastQueryLoaded.equals(DEFAULT_QUERY)) {
-            loadRepositories(false, DEFAULT_QUERY);
-        }
     }
 
     @Override

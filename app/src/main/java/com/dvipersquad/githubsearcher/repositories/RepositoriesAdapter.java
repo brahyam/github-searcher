@@ -45,12 +45,18 @@ public class RepositoriesAdapter extends RecyclerView.Adapter<RepositoriesAdapte
                     .load(repository.getOwner().getAvatarUrl())
                     .transform(new CircleTransform())
                     .into(holder.imgRepositoryOwnerAvatar);
+        } else {
+            Picasso.get()
+                    .load(R.drawable.circle_avatar_placeholder)
+                    .into(holder.imgRepositoryOwnerAvatar);
         }
 
         holder.txtRepositoryName.setText(repository.getName());
 
         if (!TextUtils.isEmpty(repository.getDescription())) {
             holder.txtRepositoryDescription.setText(repository.getDescription());
+        } else {
+            holder.txtRepositoryDescription.setText("");
         }
 
         String forkCount;

@@ -16,4 +16,5 @@
     <color name="colorRepositoryDetailsSubtitle">#FFF</color>
     <color name="colorRepositoryDetailsSubscribersLabel">#808080</color>
     <color name="colorRepositoryDetailsSubscribersCount">#808080</color>
+    <color name="colorRepositoryListEmptyText">#808080</color>
 </resources>

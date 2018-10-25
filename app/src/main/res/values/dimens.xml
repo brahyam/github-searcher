@@ -26,4 +26,5 @@
     <dimen name="repository_details_subtitle_top_margin">30dp</dimen>
     <dimen name="repository_details_subscribers_label_text">15sp</dimen>
     <dimen name="repository_details_subscribers_text">35sp</dimen>
+    <dimen name="empty_list_text">25sp</dimen>
 </resources>
