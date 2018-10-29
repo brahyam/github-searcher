@@ -32,7 +32,7 @@ public class RepositoriesRepository implements RepositoriesDataSource {
 
     @Override
     public void getRepositories(@NonNull final String query, final String lastElement, @NonNull final LoadRepositoriesCallback callback) {
-        if (cachedRepositories != null && !cacheIsDirty && lastElement != null && !lastElement.isEmpty()) {
+        if (cachedRepositories != null && !cacheIsDirty && (lastElement == null || lastElement.isEmpty())) {
             callback.onRepositoriesLoaded(new ArrayList<>(cachedRepositories.values()), EMPTY_CURSOR, true);
         }
 

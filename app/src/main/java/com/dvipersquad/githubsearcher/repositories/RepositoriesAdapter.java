@@ -111,7 +111,7 @@ public class RepositoriesAdapter extends RecyclerView.Adapter<RepositoriesAdapte
             super(itemView);
             layout = itemView;
             imgRepositoryOwnerAvatar = itemView.findViewById(R.id.imgUserAvatar);
-            txtRepositoryName = itemView.findViewById(R.id.txtUserName);
+            txtRepositoryName = itemView.findViewById(R.id.txtRepositoryName);
             txtRepositoryDescription = itemView.findViewById(R.id.txtRepositoryDescription);
             txtRepositoryForkCount = itemView.findViewById(R.id.txtRepositoryForkCount);
         }

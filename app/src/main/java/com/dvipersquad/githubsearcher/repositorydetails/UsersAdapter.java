@@ -90,7 +90,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
             super(itemView);
             layout = itemView;
             imgUserAvatar = itemView.findViewById(R.id.imgUserAvatar);
-            txtUserName = itemView.findViewById(R.id.txtUserName);
+            txtUserName = itemView.findViewById(R.id.txtRepositoryName);
         }
     }
 

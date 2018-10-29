@@ -56,7 +56,7 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
     private EndlessRecyclerViewScrollListener paginationListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
         @Override
         public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-            if (!isLoading) {
+            if (!isLoading && !isLastPage) {
                 presenter.loadRepositories(false, query);
             }
         }
@@ -153,13 +153,21 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
     }
 
     @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            presenter.loadState(savedInstanceState);
+        }
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         presenter.dropView();
     }
 
     @Override
-    public void showRepositories(List<Repository> repositories, boolean isLastPage, boolean clearAdapter) {
+    public void showRepositories(List<Repository> repositories, boolean hasNextPage, boolean clearAdapter) {
         if (clearAdapter) {
             adapter.replaceData(repositories);
         } else {
@@ -167,7 +175,7 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
         }
         recyclerRepositories.setVisibility(View.VISIBLE);
         isLoading = false;
-        this.isLastPage = isLastPage;
+        isLastPage = !hasNextPage;
     }
 
     @Override
@@ -184,6 +192,12 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
         if (getView() != null) {
             Snackbar.make(getView(), message, Snackbar.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        presenter.saveState(outState);
+        super.onSaveInstanceState(outState);
     }
 
     @Override

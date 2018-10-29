@@ -31,6 +31,15 @@ public interface RepositoriesDao {
     List<Repository> getRepositories();
 
     /**
+     * Select all repositories that matches query
+     *
+     * @param query repository name
+     * @return all repositories that matches query
+     */
+    @Query("SELECT * FROM Repositories WHERE name LIKE :query ORDER BY id")
+    List<Repository> getRepositoriesForQuery(String query);
+
+    /**
      * Select a repository by id
      *
      * @param repositoryId the repository id

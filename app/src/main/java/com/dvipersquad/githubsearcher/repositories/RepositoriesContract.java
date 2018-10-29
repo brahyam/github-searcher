@@ -1,5 +1,6 @@
 package com.dvipersquad.githubsearcher.repositories;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.dvipersquad.githubsearcher.BasePresenter;
@@ -12,7 +13,7 @@ public interface RepositoriesContract {
 
     interface View extends BaseView<Presenter> {
 
-        void showRepositories(List<Repository> repositories, boolean isLastPage, boolean clearAdapter);
+        void showRepositories(List<Repository> repositories, boolean hasNextPage, boolean clearAdapter);
 
         void toggleLoadingIndicator(boolean active);
 
@@ -26,6 +27,10 @@ public interface RepositoriesContract {
     }
 
     interface Presenter extends BasePresenter<View> {
+
+        void saveState(Bundle state);
+
+        void loadState(Bundle state);
 
         void loadRepositories(boolean forceUpdate, String query);
 

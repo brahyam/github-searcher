@@ -1,5 +1,6 @@
 package com.dvipersquad.githubsearcher.repositories;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -16,12 +17,17 @@ import javax.inject.Inject;
 public class RepositoriesPresenter implements RepositoriesContract.Presenter {
 
     private static final String TAG = RepositoriesPresenter.class.getSimpleName();
+    private static final String STATE_FIRST_LOAD = "firstLoad";
+    private static final String STATE_LAST_ELEMENT = "lastElement";
+    private static final String STATE_LAST_QUERY = "lastQuery";
+
     private final RepositoriesRepository repositoriesRepository;
 
     @Nullable
     private RepositoriesContract.View repositoriesView;
 
     private boolean firstLoad = true;
+    private String firstElementLoaded;
     private String lastElementLoaded;
     private String lastQueryLoaded;
 
@@ -31,12 +37,31 @@ public class RepositoriesPresenter implements RepositoriesContract.Presenter {
     }
 
     @Override
+    public void saveState(Bundle state) {
+        state.putBoolean(STATE_FIRST_LOAD, firstLoad);
+        state.putString(STATE_LAST_ELEMENT, firstElementLoaded);
+        state.putString(STATE_LAST_QUERY, lastQueryLoaded);
+    }
+
+    @Override
+    public void loadState(Bundle state) {
+        firstLoad = state.getBoolean(STATE_FIRST_LOAD);
+        lastElementLoaded = state.getString(STATE_LAST_ELEMENT);
+        lastQueryLoaded = state.getString(STATE_LAST_QUERY);
+        loadRepositories(false, lastQueryLoaded);
+    }
+
+    @Override
     public void loadRepositories(boolean forceUpdate, final String query) {
+        if (query == null || query.isEmpty()) {
+            return;
+        }
+
         if (repositoriesView != null) {
             repositoriesView.toggleLoadingIndicator(true);
         }
 
-        if (query != null && !query.isEmpty() && lastQueryLoaded == null || !lastQueryLoaded.equals(query)) {
+        if (lastQueryLoaded == null || !lastQueryLoaded.equals(query)) {
             lastQueryLoaded = query;
             lastElementLoaded = null;
             firstLoad = true;
@@ -53,6 +78,7 @@ public class RepositoriesPresenter implements RepositoriesContract.Presenter {
                 if (repositoriesView == null || !repositoriesView.isActive()) {
                     return;
                 }
+                firstElementLoaded = lastElementLoaded;
                 lastElementLoaded = lastElement;
                 repositoriesView.toggleLoadingIndicator(false);
                 repositoriesView.hideStartInstructionsText();
