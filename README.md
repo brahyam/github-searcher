@@ -1,4 +1,6 @@
-# Github Searcher - AsanaRebel
+[![CircleCI](https://circleci.com/gh/brahyam/github-searcher/tree/dev.svg?style=svg)](https://circleci.com/gh/brahyam/github-searcher/tree/dev)
+
+# Github Searcher
 ### Summary
 
 Android app capable of searching GitHub repositories by keywords as well as any qualifiers using the
