@@ -49,8 +49,13 @@ public class RepositoriesRemoteDataSource implements RepositoriesDataSource {
     }
 
     @Override
-    public void getRepositories(@NonNull String query, String lastElement,
-                                @NonNull final LoadRepositoriesCallback callback) {
+    public void getRepositories(@NonNull String query, @NonNull LoadRepositoriesCallback callback) {
+        getRepositoriesNextPage(query, null, callback);
+    }
+
+    @Override
+    public void getRepositoriesNextPage(@NonNull String query, String lastElement,
+                                        @NonNull final LoadRepositoriesCallback callback) {
         GetRepositoriesApiRequest request =
                 new GetRepositoriesApiRequest(
                         new GetRepositoriesApiRequest.Variables(

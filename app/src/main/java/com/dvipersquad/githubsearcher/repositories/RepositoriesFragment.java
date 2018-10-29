@@ -47,6 +47,8 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
 
     private RecyclerView recyclerRepositories;
 
+    private Bundle savedInstance;
+
     private String query;
 
     private boolean isLoading;
@@ -57,7 +59,8 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
         @Override
         public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
             if (!isLoading && !isLastPage) {
-                presenter.loadRepositories(false, query);
+                isLoading = true;
+                presenter.loadNextPage();
             }
         }
     };
@@ -119,6 +122,7 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if (!TextUtils.isEmpty(textView.getText().toString())) {
+                    isLoading = true;
                     presenter.loadRepositories(true, query);
                     linearLayoutManager.smoothScrollToPosition(recyclerRepositories, null, 0);
                 }
@@ -132,6 +136,7 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
             @Override
             public void onClick(View view) {
                 if (!TextUtils.isEmpty(editTextSearchRepositories.getText().toString())) {
+                    isLoading = true;
                     presenter.loadRepositories(true, query);
                     linearLayoutManager.smoothScrollToPosition(recyclerRepositories, null, 0);
                 }
@@ -146,17 +151,20 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        presenter.takeView(this);
-        isLoading = true; // taking the view causes the presenter to load repositories
-    }
-
-    @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         if (savedInstanceState != null) {
-            presenter.loadState(savedInstanceState);
+            savedInstance = savedInstanceState;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.takeView(this);
+        if (savedInstance != null) {
+            presenter.loadState(savedInstance);
+            savedInstance = null;
         }
     }
 

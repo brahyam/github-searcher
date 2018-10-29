@@ -86,16 +86,23 @@ public class RepositoriesRepositoryTest {
         twoRepositoriesLoadCallsToRepository(loadRepositoriesCallback);
 
         // Then repositories were only requested once from Service API
-        verify(repositoriesRemoteDataSource).getRepositories(any(String.class), any(String.class), any(RepositoriesDataSource.LoadRepositoriesCallback.class));
+        verify(repositoriesLocalDataSource).getRepositoriesNextPage(any(String.class), any(String.class), any(RepositoriesDataSource.LoadRepositoriesCallback.class));
+    }
+
+    @Test
+    public void getRepositoriesNextPage_repositoriesAreRetrievedFromRemote() {
+        repositoriesRepository.getRepositoriesNextPage(DEFAULT_QUERY, DEFAULT_LAST_ELEMENT, loadRepositoriesCallback);
+
+        verify(repositoriesRemoteDataSource).getRepositoriesNextPage(any(String.class), any(String.class), any(RepositoriesDataSource.LoadRepositoriesCallback.class));
     }
 
     @Test
     public void getRepositories_requestsAllRepositoriesFromLocalDataSource() {
         // When repositories are requested from the repositories repository
-        repositoriesRepository.getRepositories(DEFAULT_QUERY, null, loadRepositoriesCallback);
+        repositoriesRepository.getRepositories(DEFAULT_QUERY, loadRepositoriesCallback);
 
         // Then repositories are loaded from the local data source
-        verify(repositoriesLocalDataSource).getRepositories(any(String.class), any(String.class), any(RepositoriesDataSource.LoadRepositoriesCallback.class));
+        verify(repositoriesLocalDataSource).getRepositoriesNextPage(any(String.class), any(String.class), any(RepositoriesDataSource.LoadRepositoriesCallback.class));
     }
 
     @Test
@@ -154,20 +161,20 @@ public class RepositoriesRepositoryTest {
     public void getRepositoriesWithDirtyCache_RepositoriesAreRetrievedFromRemote() {
         // Request repositories with dirty cache
         repositoriesRepository.refreshRepositories();
-        repositoriesRepository.getRepositories(DEFAULT_QUERY, DEFAULT_LAST_ELEMENT, loadRepositoriesCallback);
+        repositoriesRepository.getRepositoriesNextPage(DEFAULT_QUERY, DEFAULT_LAST_ELEMENT, loadRepositoriesCallback);
 
         // And the remote data source has data available
         setRepositoriesAvailable(repositoriesRemoteDataSource, REPOSITORIES);
 
         // Verify the repositories from the remote data source are returned, not the local
-        verify(repositoriesLocalDataSource, never()).getRepositories(any(String.class), any(String.class), eq(loadRepositoriesCallback));
+        verify(repositoriesLocalDataSource, never()).getRepositoriesNextPage(any(String.class), any(String.class), eq(loadRepositoriesCallback));
         verify(loadRepositoriesCallback).onRepositoriesLoaded(eq(REPOSITORIES), any(String.class), any(Boolean.class));
     }
 
     @Test
     public void getRepositoriesWithLocalDataSourceUnavailable_repositoriesAreRetrievedFromRemote() {
         // Request repositories
-        repositoriesRepository.getRepositories(DEFAULT_QUERY, null, loadRepositoriesCallback);
+        repositoriesRepository.getRepositories(DEFAULT_QUERY, loadRepositoriesCallback);
 
         // And the local data source has no data available
         setRepositoriesNotAvailable(repositoriesLocalDataSource);
@@ -182,7 +189,7 @@ public class RepositoriesRepositoryTest {
     @Test
     public void getRepositoriesWithBothDataSourcesUnavailable_firesOnDataUnavailable() {
         // Request repositories
-        repositoriesRepository.getRepositories(DEFAULT_QUERY, null, loadRepositoriesCallback);
+        repositoriesRepository.getRepositories(DEFAULT_QUERY, loadRepositoriesCallback);
 
         // data not available locally
         setRepositoriesNotAvailable(repositoriesLocalDataSource);
@@ -200,7 +207,7 @@ public class RepositoriesRepositoryTest {
         repositoriesRepository.refreshRepositories();
 
         // Request repositories
-        repositoriesRepository.getRepositories(DEFAULT_QUERY, DEFAULT_LAST_ELEMENT, loadRepositoriesCallback);
+        repositoriesRepository.getRepositoriesNextPage(DEFAULT_QUERY, DEFAULT_LAST_ELEMENT, loadRepositoriesCallback);
 
         // Fake remote data source response
         setRepositoriesAvailable(repositoriesRemoteDataSource, REPOSITORIES);
@@ -214,30 +221,30 @@ public class RepositoriesRepositoryTest {
      */
     private void twoRepositoriesLoadCallsToRepository(RepositoriesDataSource.LoadRepositoriesCallback callback) {
         // repositories are requested
-        repositoriesRepository.getRepositories(DEFAULT_QUERY, null, callback); // First call to API
+        repositoriesRepository.getRepositories(DEFAULT_QUERY, callback); // First call to API
 
         // capture the callback
-        verify(repositoriesLocalDataSource).getRepositories(any(String.class), any(String.class), loadRepositoriesCallbackCaptor.capture());
+        verify(repositoriesLocalDataSource).getRepositoriesNextPage(any(String.class), any(String.class), loadRepositoriesCallbackCaptor.capture());
 
         // Local data source doesn't have data yet
         loadRepositoriesCallbackCaptor.getValue().onDataNotAvailable(null);
 
         // Verify the remote data source is queried
-        verify(repositoriesRemoteDataSource).getRepositories(any(String.class), any(String.class), loadRepositoriesCallbackCaptor.capture());
+        verify(repositoriesRemoteDataSource).getRepositoriesNextPage(any(String.class), any(String.class), loadRepositoriesCallbackCaptor.capture());
 
         // Trigger callback so repositories are cached
         loadRepositoriesCallbackCaptor.getValue().onRepositoriesLoaded(REPOSITORIES, DEFAULT_LAST_ELEMENT, false);
 
-        repositoriesRepository.getRepositories(DEFAULT_QUERY, null, callback); // Second call to API
+        repositoriesRepository.getRepositories(DEFAULT_QUERY, callback); // Second call to API
     }
 
     private void setRepositoriesNotAvailable(RepositoriesDataSource dataSource) {
-        verify(dataSource).getRepositories(any(String.class), any(String.class), loadRepositoriesCallbackCaptor.capture());
+        verify(dataSource).getRepositoriesNextPage(any(String.class), any(String.class), loadRepositoriesCallbackCaptor.capture());
         loadRepositoriesCallbackCaptor.getValue().onDataNotAvailable(DEFAULT_MESSAGE);
     }
 
     private void setRepositoriesAvailable(RepositoriesDataSource dataSource, List<Repository> repositories) {
-        verify(dataSource).getRepositories(any(String.class), any(String.class), loadRepositoriesCallbackCaptor.capture());
+        verify(dataSource).getRepositoriesNextPage(any(String.class), any(String.class), loadRepositoriesCallbackCaptor.capture());
         loadRepositoriesCallbackCaptor.getValue().onRepositoriesLoaded(repositories, DEFAULT_LAST_ELEMENT, true);
     }
 }

@@ -34,6 +34,8 @@ public interface RepositoriesContract {
 
         void loadRepositories(boolean forceUpdate, String query);
 
+        void loadNextPage();
+
         void openRepositoryDetailsView(@NonNull Repository repository);
 
     }

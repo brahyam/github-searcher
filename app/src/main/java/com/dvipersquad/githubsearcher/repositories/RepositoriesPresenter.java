@@ -27,8 +27,7 @@ public class RepositoriesPresenter implements RepositoriesContract.Presenter {
     private RepositoriesContract.View repositoriesView;
 
     private boolean firstLoad = true;
-    private String firstElementLoaded;
-    private String lastElementLoaded;
+    private String lastElementCursor;
     private String lastQueryLoaded;
 
     @Inject
@@ -39,14 +38,14 @@ public class RepositoriesPresenter implements RepositoriesContract.Presenter {
     @Override
     public void saveState(Bundle state) {
         state.putBoolean(STATE_FIRST_LOAD, firstLoad);
-        state.putString(STATE_LAST_ELEMENT, firstElementLoaded);
+        state.putString(STATE_LAST_ELEMENT, lastElementCursor);
         state.putString(STATE_LAST_QUERY, lastQueryLoaded);
     }
 
     @Override
     public void loadState(Bundle state) {
         firstLoad = state.getBoolean(STATE_FIRST_LOAD);
-        lastElementLoaded = state.getString(STATE_LAST_ELEMENT);
+        lastElementCursor = state.getString(STATE_LAST_ELEMENT);
         lastQueryLoaded = state.getString(STATE_LAST_QUERY);
         loadRepositories(false, lastQueryLoaded);
     }
@@ -63,7 +62,7 @@ public class RepositoriesPresenter implements RepositoriesContract.Presenter {
 
         if (lastQueryLoaded == null || !lastQueryLoaded.equals(query)) {
             lastQueryLoaded = query;
-            lastElementLoaded = null;
+            lastElementCursor = null;
             firstLoad = true;
         }
 
@@ -71,17 +70,50 @@ public class RepositoriesPresenter implements RepositoriesContract.Presenter {
             repositoriesRepository.refreshRepositories();
         }
 
-        repositoriesRepository.getRepositories(lastQueryLoaded, lastElementLoaded, new RepositoriesDataSource.LoadRepositoriesCallback() {
+        repositoriesRepository.getRepositories(lastQueryLoaded, new RepositoriesDataSource.LoadRepositoriesCallback() {
 
             @Override
             public void onRepositoriesLoaded(List<Repository> repositories, @NonNull String lastElement, boolean hasNextPage) {
                 if (repositoriesView == null || !repositoriesView.isActive()) {
                     return;
                 }
-                firstElementLoaded = lastElementLoaded;
-                lastElementLoaded = lastElement;
+
+                if (!lastElement.isEmpty()) {
+                    lastElementCursor = lastElement;
+                }
+
                 repositoriesView.toggleLoadingIndicator(false);
                 repositoriesView.hideStartInstructionsText();
+                repositoriesView.showRepositories(repositories, hasNextPage, firstLoad);
+                firstLoad = false;
+            }
+
+            @Override
+            public void onDataNotAvailable(String message) {
+                if (repositoriesView == null || !repositoriesView.isActive()) {
+                    return;
+                }
+                repositoriesView.toggleLoadingIndicator(false);
+                repositoriesView.showErrorMessage(message);
+            }
+        });
+    }
+
+    @Override
+    public void loadNextPage() {
+        if (repositoriesView != null) {
+            repositoriesView.toggleLoadingIndicator(true);
+        }
+
+        repositoriesRepository.getRepositoriesNextPage(lastQueryLoaded, lastElementCursor, new RepositoriesDataSource.LoadRepositoriesCallback() {
+
+            @Override
+            public void onRepositoriesLoaded(List<Repository> repositories, @NonNull String lastElement, boolean hasNextPage) {
+                if (repositoriesView == null || !repositoriesView.isActive()) {
+                    return;
+                }
+                lastElementCursor = lastElement;
+                repositoriesView.toggleLoadingIndicator(false);
                 repositoriesView.showRepositories(repositories, hasNextPage, firstLoad);
                 firstLoad = false;
             }

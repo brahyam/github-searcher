@@ -85,7 +85,7 @@ public class RepositoriesPresenterTests {
 
         // Called 2 times. On fragment added/ On load requested
         verify(repositoriesRepository, times(2))
-                .getRepositories(any(String.class), any(String.class), loadRepositoriesCallbackCaptor.capture());
+                .getRepositoriesNextPage(any(String.class), any(String.class), loadRepositoriesCallbackCaptor.capture());
 
         loadRepositoriesCallbackCaptor.getValue().onRepositoriesLoaded(REPOSITORIES, DEFAULT_LAST_ELEMENT, true);
 
@@ -104,7 +104,7 @@ public class RepositoriesPresenterTests {
         repositoriesPresenter.loadRepositories(true, DEFAULT_QUERY);
 
         // And the repositories aren't available in the repository
-        verify(repositoriesRepository, times(2)).getRepositories(any(String.class), any(String.class), loadRepositoriesCallbackCaptor.capture());
+        verify(repositoriesRepository, times(2)).getRepositoriesNextPage(any(String.class), any(String.class), loadRepositoriesCallbackCaptor.capture());
         loadRepositoriesCallbackCaptor.getValue().onDataNotAvailable(DEFAULT_MESSAGE);
 
         // Then an error message is shown

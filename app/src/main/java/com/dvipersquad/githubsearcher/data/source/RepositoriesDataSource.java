@@ -22,7 +22,9 @@ public interface RepositoriesDataSource {
         void onDataNotAvailable(String message);
     }
 
-    void getRepositories(@NonNull String query, String lastElement, @NonNull LoadRepositoriesCallback callback);
+    void getRepositories(@NonNull String query, @NonNull LoadRepositoriesCallback callback);
+
+    void getRepositoriesNextPage(@NonNull String query, String lastElement, @NonNull LoadRepositoriesCallback callback);
 
     void getRepository(@NonNull String repositoryId, @NonNull GetRepositoryCallback callback);
 

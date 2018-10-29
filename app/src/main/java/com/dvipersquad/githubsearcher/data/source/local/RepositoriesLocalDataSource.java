@@ -27,7 +27,12 @@ public class RepositoriesLocalDataSource implements RepositoriesDataSource {
     }
 
     @Override
-    public void getRepositories(@NonNull final String query, final String lastElement, @NonNull final RepositoriesDataSource.LoadRepositoriesCallback callback) {
+    public void getRepositories(@NonNull String query, @NonNull LoadRepositoriesCallback callback) {
+        getRepositoriesNextPage(query, null, callback);
+    }
+
+    @Override
+    public void getRepositoriesNextPage(@NonNull final String query, final String lastElement, @NonNull final RepositoriesDataSource.LoadRepositoriesCallback callback) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {

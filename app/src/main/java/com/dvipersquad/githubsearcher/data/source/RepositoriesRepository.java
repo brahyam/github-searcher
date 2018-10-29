@@ -31,15 +31,16 @@ public class RepositoriesRepository implements RepositoriesDataSource {
     }
 
     @Override
-    public void getRepositories(@NonNull final String query, final String lastElement, @NonNull final LoadRepositoriesCallback callback) {
-        if (cachedRepositories != null && !cacheIsDirty && (lastElement == null || lastElement.isEmpty())) {
+    public void getRepositories(@NonNull final String query, @NonNull final LoadRepositoriesCallback callback) {
+        if (cachedRepositories != null && !cacheIsDirty) {
             callback.onRepositoriesLoaded(new ArrayList<>(cachedRepositories.values()), EMPTY_CURSOR, true);
+            return;
         }
 
-        if (cacheIsDirty || (lastElement != null && !lastElement.isEmpty())) {
-            getRepositoriesFromRemoteDataSource(query, lastElement, callback);
+        if (cacheIsDirty) {
+            getRepositoriesFromRemoteDataSource(query, null, callback);
         } else {
-            repositoriesLocalDataSource.getRepositories(query, lastElement, new LoadRepositoriesCallback() {
+            repositoriesLocalDataSource.getRepositoriesNextPage(query, null, new LoadRepositoriesCallback() {
 
                 @Override
                 public void onRepositoriesLoaded(List<Repository> repositories, @NonNull String lastElement, boolean hasNextPage) {
@@ -49,14 +50,19 @@ public class RepositoriesRepository implements RepositoriesDataSource {
 
                 @Override
                 public void onDataNotAvailable(String message) {
-                    getRepositoriesFromRemoteDataSource(query, lastElement, callback);
+                    getRepositoriesFromRemoteDataSource(query, null, callback);
                 }
             });
         }
     }
 
+    @Override
+    public void getRepositoriesNextPage(@NonNull final String query, final String lastElement, @NonNull final LoadRepositoriesCallback callback) {
+        getRepositoriesFromRemoteDataSource(query, lastElement, callback);
+    }
+
     private void getRepositoriesFromRemoteDataSource(final String query, String lastElement, final LoadRepositoriesCallback callback) {
-        repositoriesRemoteDataSource.getRepositories(query, lastElement, new LoadRepositoriesCallback() {
+        repositoriesRemoteDataSource.getRepositoriesNextPage(query, lastElement, new LoadRepositoriesCallback() {
 
             @Override
             public void onRepositoriesLoaded(List<Repository> repositories, @NonNull String lastElement, boolean hasNextPage) {
