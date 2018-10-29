@@ -3,6 +3,7 @@ package com.dvipersquad.githubsearcher.data.source.remote;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.dvipersquad.githubsearcher.BuildConfig;
 import com.dvipersquad.githubsearcher.data.Repository;
 import com.dvipersquad.githubsearcher.data.source.RepositoriesDataSource;
 
@@ -25,7 +26,7 @@ import retrofit2.http.POST;
 public class RepositoriesRemoteDataSource implements RepositoriesDataSource {
 
     private final static String API_URL = "https://api.github.com/";
-    private final static String SECURITY_TOKEN = "742a74a3a9c58e95e651956b7a31b21bbc62b1f3";
+    private final static String SECURITY_TOKEN = BuildConfig.ApiToken;
     private final static Integer REPOSITORIES_TO_FETCH = 15;
     private final static Integer WATCHERS_TO_FETCH = 20;
     private final static String TAG = RepositoriesRemoteDataSource.class.getSimpleName();
