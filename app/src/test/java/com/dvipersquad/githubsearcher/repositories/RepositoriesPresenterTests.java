@@ -18,7 +18,6 @@ import java.util.List;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -83,17 +82,17 @@ public class RepositoriesPresenterTests {
         // Request repositories load
         repositoriesPresenter.loadRepositories(true, DEFAULT_QUERY);
 
-        // Called 2 times. On fragment added/ On load requested
-        verify(repositoriesRepository, times(2))
-                .getRepositories(any(String.class), any(String.class), loadRepositoriesCallbackCaptor.capture());
+        // Called On load requested
+        verify(repositoriesRepository)
+                .getRepositories(any(String.class), loadRepositoriesCallbackCaptor.capture());
 
         loadRepositoriesCallbackCaptor.getValue().onRepositoriesLoaded(REPOSITORIES, DEFAULT_LAST_ELEMENT, true);
 
         // Progress indicator is shown
-        verify(repositoriesView, times(2)).showLoadingIndicator(true);
+        verify(repositoriesView).toggleLoadingIndicator(true);
         // Progress indicator is hidden and repositories are shown
-        verify(repositoriesView, times(1)).showLoadingIndicator(false);
-        ArgumentCaptor<List> showRepositoriesArgumentCaptor = ArgumentCaptor.forClass(List.class);
+        verify(repositoriesView).toggleLoadingIndicator(false);
+
         verify(repositoriesView).showRepositories(eq(REPOSITORIES), any(Boolean.class), any(Boolean.class));
     }
 
@@ -104,7 +103,8 @@ public class RepositoriesPresenterTests {
         repositoriesPresenter.loadRepositories(true, DEFAULT_QUERY);
 
         // And the repositories aren't available in the repository
-        verify(repositoriesRepository, times(2)).getRepositories(any(String.class), any(String.class), loadRepositoriesCallbackCaptor.capture());
+        verify(repositoriesRepository).getRepositories(any(String.class), loadRepositoriesCallbackCaptor.capture());
+
         loadRepositoriesCallbackCaptor.getValue().onDataNotAvailable(DEFAULT_MESSAGE);
 
         // Then an error message is shown

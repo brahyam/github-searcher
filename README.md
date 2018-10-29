@@ -1,4 +1,6 @@
-# Github Searcher - AsanaRebel
+[![CircleCI](https://circleci.com/gh/brahyam/github-searcher/tree/dev.svg?style=svg)](https://circleci.com/gh/brahyam/github-searcher/tree/dev)
+
+# Github Searcher
 ### Summary
 
 Android app capable of searching GitHub repositories by keywords as well as any qualifiers using the
@@ -31,12 +33,13 @@ transformations
  for live browsing DB content and debugging issues related to local data storage
 * [Mockito](https://github.com/mockito/mockito)  for mocking classes for unit testing
 
+### Pre-requisites / How to run
+Before being able to compile and use the app you must provide your own Github api token in 
+on ./gradle.properties githubSearcher_gitHubApiToken variable. To obtain a Github api token follow
+the instructions on:
+[Authenticating with GraphQL](https://developer.github.com/v4/guides/forming-calls/#authenticating-with-graphql)
+
 ### Limitations/Known issues
-* For the app to be able to be used out of the box I have included a very limited API key in:
-data/source/remote/RepositoriesRemoteDataSource. however this key will be invalidated in the future.
- To solve this eventual problem you will have to 
- [create your own](https://developer.github.com/v4/guides/forming-calls/#authenticating-with-graphql) 
- and change it in the above mentioned class  
 * Because of time constraints the user list inside the repository details has currently only the 
 users requested on the GetRepositoriesApiRequest, it will not load more items on the fly.
 * After extensive testing and integrations attempts I decided not to use the apollo-android library

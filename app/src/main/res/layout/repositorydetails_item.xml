@@ -27,7 +27,7 @@
             android:contentDescription="@string/repository_avatar_description" />
 
         <TextView
-            android:id="@+id/txtUserName"
+            android:id="@+id/txtRepositoryName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/app_name"

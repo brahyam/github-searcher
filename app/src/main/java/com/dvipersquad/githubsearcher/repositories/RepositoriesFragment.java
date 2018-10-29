@@ -43,6 +43,12 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
 
     private ProgressBar progressBarRepositoriesLoading;
 
+    private TextView txtStartInstructions;
+
+    private RecyclerView recyclerRepositories;
+
+    private Bundle savedInstance;
+
     private String query;
 
     private boolean isLoading;
@@ -52,8 +58,9 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
     private EndlessRecyclerViewScrollListener paginationListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
         @Override
         public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-            if (!isLoading) {
-                presenter.loadRepositories(false, query);
+            if (!isLoading && !isLastPage) {
+                isLoading = true;
+                presenter.loadNextPage();
             }
         }
     };
@@ -86,7 +93,8 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.repositories_frag, container, false);
         progressBarRepositoriesLoading = rootView.findViewById(R.id.progressBarRepositoriesLoading);
-        final RecyclerView recyclerRepositories = rootView.findViewById(R.id.recyclerRepositories);
+        txtStartInstructions = rootView.findViewById(R.id.txtStartInstructions);
+        recyclerRepositories = rootView.findViewById(R.id.recyclerRepositories);
         recyclerRepositories.setHasFixedSize(true);
         recyclerRepositories.setLayoutManager(linearLayoutManager);
         recyclerRepositories.addOnScrollListener(paginationListener);
@@ -109,10 +117,12 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
 
             }
         });
+
         editTextSearchRepositories.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if (!TextUtils.isEmpty(textView.getText().toString())) {
+                    isLoading = true;
                     presenter.loadRepositories(true, query);
                     linearLayoutManager.smoothScrollToPosition(recyclerRepositories, null, 0);
                 }
@@ -126,6 +136,7 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
             @Override
             public void onClick(View view) {
                 if (!TextUtils.isEmpty(editTextSearchRepositories.getText().toString())) {
+                    isLoading = true;
                     presenter.loadRepositories(true, query);
                     linearLayoutManager.smoothScrollToPosition(recyclerRepositories, null, 0);
                 }
@@ -140,10 +151,21 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
     }
 
     @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            savedInstance = savedInstanceState;
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         presenter.takeView(this);
-        isLoading = true; // taking the view causes the presenter to load repositories
+        if (savedInstance != null) {
+            presenter.loadState(savedInstance);
+            savedInstance = null;
+        }
     }
 
     @Override
@@ -153,18 +175,19 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
     }
 
     @Override
-    public void showRepositories(List<Repository> repositories, boolean isLastPage, boolean clearAdapter) {
+    public void showRepositories(List<Repository> repositories, boolean hasNextPage, boolean clearAdapter) {
         if (clearAdapter) {
             adapter.replaceData(repositories);
         } else {
             adapter.addData(repositories);
         }
+        recyclerRepositories.setVisibility(View.VISIBLE);
         isLoading = false;
-        this.isLastPage = isLastPage;
+        isLastPage = !hasNextPage;
     }
 
     @Override
-    public void showLoadingIndicator(boolean active) {
+    public void toggleLoadingIndicator(boolean active) {
         if (active) {
             progressBarRepositoriesLoading.setVisibility(View.VISIBLE);
         } else {
@@ -180,10 +203,21 @@ public class RepositoriesFragment extends DaggerFragment implements Repositories
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        presenter.saveState(outState);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public void showRepositoryDetailsUI(@NonNull String repositoryId) {
         Intent intent = new Intent(getContext(), RepositoryDetailsActivity.class);
         intent.putExtra(RepositoryDetailsActivity.EXTRA_REPOSITORY_ID, repositoryId);
         startActivity(intent);
+    }
+
+    @Override
+    public void hideStartInstructionsText() {
+        txtStartInstructions.setVisibility(View.GONE);
     }
 
     @Override
