@@ -119,7 +119,7 @@ public class RepositoryDetailsFragment extends DaggerFragment implements Reposit
     public void showRepository(Repository repository) {
         txtRepositoryDetailsName.setText(repository.getName());
         String subscriberCount;
-        if (repository.getForkCount() > 999) {
+        if (repository.getWatchers().getTotalCount() > 999) {
             subscriberCount = String.format(Locale.getDefault(), "%dK", repository.getWatchers().getTotalCount() / 1000);
         } else {
             subscriberCount = String.format(Locale.getDefault(), "%d", repository.getWatchers().getTotalCount());

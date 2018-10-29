@@ -44,9 +44,17 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                     .load(user.getAvatarUrl())
                     .transform(new CircleTransform())
                     .into(holder.imgUserAvatar);
+        } else {
+            Picasso.get()
+                    .load(R.drawable.circle_avatar_placeholder)
+                    .into(holder.imgUserAvatar);
         }
 
-        holder.txtUserName.setText(user.getUserName());
+        if (user.getUserName() != null && !user.getUserName().isEmpty()) {
+            holder.txtUserName.setText(user.getUserName());
+        } else {
+            holder.txtUserName.setText("");
+        }
 
         if (userListener != null) {
             holder.layout.setOnClickListener(new View.OnClickListener() {
@@ -68,14 +76,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
             this.users = new ArrayList<>();
         }
         this.users.clear();
-        this.users.addAll(users);
-        notifyDataSetChanged();
-    }
-
-    void addData(List<User> users) {
-        if (this.users == null) {
-            this.users = new ArrayList<>();
-        }
         this.users.addAll(users);
         notifyDataSetChanged();
     }
